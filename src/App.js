@@ -67,8 +67,12 @@ function App() {
 
     else
     {
+      if(act.toString().length===1)
+        setDec(false);
+        
       if(!dec)
       {
+        
         let s=act.toString()+'.';
         setact(s);
         setDec(true);
@@ -108,10 +112,40 @@ function App() {
     
   }
 
+  const del= ()=>{
+    if(ans)
+    {
+      setact(0);
+      setAns(false);
+    }
+
+    else
+    {
+      let res=act.toString();
+      let len=res.length;
+      if(len>0)
+      {
+        len=len-1;
+        if(len!==0)
+        {
+          res=res.slice(0,len);
+          res=parseFloat(res);
+          setact(res);
+        } 
+
+        else
+        setact(0);
+      }
+    }
+  }
+
   const clear =()=>{
     setact(0);
     sethis(null);
     setfirst(0)
+    setDec(false)
+    setNeg(false)
+    setAns(false)
   }
 
   const solve= (call)=>{
@@ -209,8 +243,9 @@ function App() {
        <button onClick={()=>handleNumber(2)}>2</button>
        <button onClick={()=>handleNumber(3)}>3</button>
        <button className="orangebut" onClick={()=>handleOperator('+')}>+</button>
-       <button id="zero" onClick={()=>handleNumber(0)}>0</button>
        <button onClick={handleDecimal}>.</button>
+       <button onClick={()=>handleNumber(0)}>0</button>
+       <button id="del" onClick={del}>⌫</button>
        <button className="orangebut" onClick={()=>solve('main')}>=</button>
 
 
