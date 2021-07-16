@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 
 function App() {
@@ -16,6 +16,8 @@ function App() {
   const [neg,setNeg]= useState(false);
 
   const [ans,setAns]=useState(false);
+
+  useEffect(()=>{})
 
   const handleNumber= (n)=>
   {
@@ -75,9 +77,25 @@ function App() {
   }
   
   const handleOperator=(o)=>{
-    if(act!=null)
-    {
 
+    if(his!==null)
+    {
+      let res=solve('func');
+      console.log(res);
+      sethis(null);
+      setact(res);
+      setfirst(res);
+      setop(o);
+      const update= res.toString()+o;
+      setact(0);
+      sethis(update);
+      setDec(false);
+      setNeg(false);
+    }
+
+
+    else
+    {
       setfirst(act);
       setop(o);
       const update= his==null?act.toString()+o:his+act.toString();
@@ -85,8 +103,9 @@ function App() {
       sethis(update);
       setDec(false);
       setNeg(false);
-
     }
+
+    
   }
 
   const clear =()=>{
@@ -95,13 +114,12 @@ function App() {
     setfirst(0)
   }
 
-  const solve= ()=>{
+  const solve= (call)=>{
     
     if(dec)
     setDec(false);
 
     let last=act;
-    console.log(first,last);
     let res;
 
     if(op==='+')
@@ -125,15 +143,30 @@ function App() {
     else
     res=act;
 
+    if(call==='main')
+    {
+      setact(res);
+    }
+
+    else if(call==='func')
+    {
+      setact(res);
+  
+      setfirst(res);
+  
+  
+      setAns(true);
+      return res;
+    }
+
+
     sethis(null);
+
+    setop(null);
+
 
     setfirst(res);
 
-    setact(res);
-
-    console.log(first,last);
-
-    setop(null);
 
     setAns(true);
 
@@ -178,7 +211,7 @@ function App() {
        <button className="orangebut" onClick={()=>handleOperator('+')}>+</button>
        <button id="zero" onClick={()=>handleNumber(0)}>0</button>
        <button onClick={handleDecimal}>.</button>
-       <button className="orangebut" onClick={solve}>=</button>
+       <button className="orangebut" onClick={()=>solve('main')}>=</button>
 
 
      </div>
