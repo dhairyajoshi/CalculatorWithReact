@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 
 function App() {
@@ -77,14 +77,6 @@ function App() {
   const handleOperator=(o)=>{
     if(act!=null)
     {
-      if(dec)
-      {
-        console.log(act)
-        let s=act;
-        s=parseFloat(s);
-        console.log(s);
-        setact(s);
-      }
 
       setfirst(act);
       setop(o);
@@ -93,6 +85,7 @@ function App() {
       sethis(update);
       setDec(false);
       setNeg(false);
+
     }
   }
 
@@ -108,6 +101,7 @@ function App() {
     setDec(false);
 
     let last=act;
+    console.log(first,last);
     let res;
 
     if(op==='+')
@@ -122,8 +116,6 @@ function App() {
     else if(op==='÷')
     {
       res=first/last;
-      if(last===0)
-      res='ERROR';
 
     }
 
@@ -133,17 +125,13 @@ function App() {
     else
     res=act;
 
-
-    console.log(first);
-
     sethis(null);
 
-    if(op!==null && res!=='ERROR')
-    res=res.toFixed(3)
+    setfirst(res);
 
     setact(res);
 
-    setfirst(last);
+    console.log(first,last);
 
     setop(null);
 
@@ -152,8 +140,6 @@ function App() {
   }
 
 
-
-  useEffect(()=>{},[]);
 
   return (
     <div className="App">
