@@ -13,39 +13,86 @@ function App() {
 
   const [dec,setDec]= useState(false);
 
+  const [neg,setNeg]= useState(false);
+
+  const [ans,setAns]=useState(false);
+
   const handleNumber= (n)=>
   {
-    
-    if(dec)
+
+    if(ans)
     {
-      let num=n.toString();
-      let s=act+num;
-      let final=parseFloat(s)
-      setact(final);
+      setact(n);
+      setAns(false);
     }
 
-    else if(act<10E13)
-    setact(10*act+n)
+
+    else
+    {
+      if(dec)
+      {
+        let num=n.toString();
+        let s=act+num;
+        let final=parseFloat(s)
+        setact(final);
+      }
+
+      else if(act<10E13)
+      {
+        if(neg)
+        setact(10*act-n)
+
+        else
+        setact(10*act+n)
+      }
+    }
+  }
+
+  const handleNeg=()=>{
+    
+    setNeg(!neg);
+
+    setact(-1*act);
+
   }
 
   const handleDecimal=()=>{
-    if(!dec)
+    if(ans)
     {
-      let s=act.toString()+'.';
-      setact(s);
-      setDec(true);
+      setact(0);
+      setAns(false);
+    }
+
+    else
+    {
+      if(!dec)
+      {
+        let s=act.toString()+'.';
+        setact(s);
+        setDec(true);
+      }
     }
   }
   
   const handleOperator=(o)=>{
     if(act!=null)
     {
-    setfirst(act);
-    setop(o);
-    const update= his==null?act.toString()+o:his+act.toString();
-    setact(null);
-    sethis(update);
-    setDec(false);
+      if(dec)
+      {
+        console.log(act)
+        let s=act;
+        s=parseFloat(s);
+        console.log(s);
+        setact(s);
+      }
+
+      setfirst(act);
+      setop(o);
+      const update= his==null?act.toString()+o:his+act.toString();
+      setact(0);
+      sethis(update);
+      setDec(false);
+      setNeg(false);
     }
   }
 
@@ -73,24 +120,34 @@ function App() {
     res=first*last;
 
     else if(op==='÷')
-    res=first/last;
+    {
+      res=first/last;
+      if(last===0)
+      res='ERROR';
+
+    }
 
     else if(op==='%')
     res=first%last;
 
     else
-    res=0;
+    res=act;
 
 
     console.log(first);
 
     sethis(null);
 
-    setact(res.toFixed(3));
+    if(op!==null && res!=='ERROR')
+    res=res.toFixed(3)
+
+    setact(res);
 
     setfirst(last);
 
     setop(null);
+
+    setAns(true);
 
   }
 
@@ -118,7 +175,7 @@ function App() {
      <div className="buttons">
 
        <button className="opers" onClick={clear}>AC</button>
-       <button className="opers" onClick={()=>handleNumber()}>+/-</button>
+       <button className="opers" onClick={handleNeg}>+/-</button>
        <button className="opers" onClick={()=>handleOperator('%')}>%</button>
        <button className="orangebut" onClick={()=>handleOperator('÷')}>÷</button>
        <button onClick={()=>handleNumber(7)}>7</button>
